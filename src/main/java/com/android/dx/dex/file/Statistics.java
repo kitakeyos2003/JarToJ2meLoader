@@ -189,9 +189,7 @@ public final class Statistics {
         public String toHuman() {
             StringBuilder sb = new StringBuilder();
 
-            sb.append("  " + name + ": "
-                    + count + " item" + (count == 1 ? "" : "s") + "; "
-                    + totalSize + " bytes total\n");
+            sb.append("  ").append(name).append(": ").append(count).append(" item").append(count == 1 ? "" : "s").append("; ").append(totalSize).append(" bytes total\n");
 
             if (smallestSize == largestSize) {
                 sb.append("    " + smallestSize + " bytes/item\n");

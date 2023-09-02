@@ -47,6 +47,8 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -712,7 +714,7 @@ public class Main {
             return context.out;
         }
 
-        return new FileOutputStream(name);
+        return Files.newOutputStream(Paths.get(name));
     }
 
     /**
@@ -1222,7 +1224,7 @@ public class Main {
                 } else if (parser.isArg(INPUT_LIST_OPTION + "=")) {
                     File inputListFile = new File(parser.getLastValue());
                     try {
-                        inputList = new ArrayList<String>();
+                        inputList = new ArrayList<>();
                         readPathsFromFile(inputListFile.getAbsolutePath(), inputList);
                     } catch (IOException e) {
                         context.err.println(

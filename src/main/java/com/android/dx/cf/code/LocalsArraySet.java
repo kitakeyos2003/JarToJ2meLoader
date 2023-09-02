@@ -159,8 +159,7 @@ public class LocalsArraySet extends LocalsArray {
             LocalsArray la = secondaries.get(label);
 
             if (la != null) {
-                sb.append("(locals array set: primary for caller "
-                        + Hex.u2(label) + ")\n");
+                sb.append("(locals array set: primary for caller ").append(Hex.u2(label)).append(")\n");
 
                 sb.append(la.getPrimary().toHuman());
                 sb.append('\n');

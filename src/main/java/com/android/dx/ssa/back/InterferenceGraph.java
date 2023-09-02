@@ -67,7 +67,7 @@ public class InterferenceGraph {
         for (int i = 0; i < oldRegCount; i++) {
             StringBuilder sb = new StringBuilder();
 
-            sb.append("Reg " + i + ":" + interference.get(i).toString());
+            sb.append("Reg ").append(i).append(":").append(interference.get(i).toString());
 
             System.out.println(sb.toString());
         }

@@ -1349,7 +1349,7 @@ public final class BytecodeArray {
      * Implementation of {@link Visitor}, which just pays attention to constant
      * values.
      */
-    class ConstantParserVisitor extends BaseVisitor {
+    static class ConstantParserVisitor extends BaseVisitor {
 
         Constant cst;
         int length;

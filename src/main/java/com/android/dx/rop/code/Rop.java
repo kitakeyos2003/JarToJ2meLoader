@@ -323,7 +323,7 @@ public final class Rop {
                     sb.append(" switches");
                     break;
                 default:
-                    sb.append(" " + Hex.u1(branchingness));
+                    sb.append(" ").append(Hex.u1(branchingness));
                     break;
             }
         }

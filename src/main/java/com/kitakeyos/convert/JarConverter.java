@@ -1,9 +1,10 @@
 package com.kitakeyos.convert;
 
-import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.IOException;
+import java.io.*;
+import java.nio.file.Files;
 import java.util.jar.JarFile;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipOutputStream;
 
 import com.android.dx.command.dexer.Main;
 
@@ -25,7 +26,7 @@ public class JarConverter {
         AndroidProducer.processJar(srcJar, patchedJar);
         try {
             Main.main(new String[]{"--no-optimize", "--output=" + dirTmp.getPath() + Config.MIDLET_DEX_FILE,
-                patchedJar.getAbsolutePath()});
+                    patchedJar.getAbsolutePath()});
         } catch (Throwable e) {
             throw new ConvertException("Dexing error", e);
         }
@@ -37,10 +38,16 @@ public class JarConverter {
         File destFile = new File(manifest.getName());
         dirTmp.renameTo(destFile);
         File zip = new File(pathConverted, destFile.getName() + ".zip");
-        FileUtils.deleteDirectory(zip);
-        ZipUtils.zip(destFile, zip);
+
+        // Ghi tệp ZIP
+        try (ZipOutputStream zipOut = new ZipOutputStream(Files.newOutputStream(zip.toPath()))) {
+            zipDirectory(destFile, destFile.getName(), zipOut);
+        }
+
+        // Xóa tất cả các thư mục tạm thời
         FileUtils.deleteDirectory(dirTmp);
         FileUtils.deleteDirectory(destFile);
+
         System.out.println(manifest.getName() + " completed.");
     }
 
@@ -48,7 +55,7 @@ public class JarConverter {
         ZipFile zip = new ZipFile(jar);
         FileHeader manifest = zip.getFileHeader(JarFile.MANIFEST_NAME);
         if (manifest == null) {
-            throw new IOException("JAR not have " + JarFile.MANIFEST_NAME);
+            throw new IOException("JAR does not have " + JarFile.MANIFEST_NAME);
         }
         try (ZipInputStream is = zip.getInputStream(manifest)) {
             ByteArrayOutputStream baos = new ByteArrayOutputStream(20480);
@@ -58,6 +65,26 @@ public class JarConverter {
                 baos.write(buf, 0, read);
             }
             return new Descriptor(baos.toString(), false);
+        }
+    }
+
+    private static void zipDirectory(File folder, String parentFolder, ZipOutputStream zos) throws IOException {
+        for (File file : folder.listFiles()) {
+            if (file.isDirectory()) {
+                zipDirectory(file, parentFolder + File.separator + file.getName(), zos);
+            } else {
+                try (FileInputStream fis = new FileInputStream(file)) {
+                    String entryName = parentFolder + File.separator + file.getName();
+                    ZipEntry ze = new ZipEntry(entryName);
+                    zos.putNextEntry(ze);
+                    byte[] buffer = new byte[1024];
+                    int len;
+                    while ((len = fis.read(buffer)) > 0) {
+                        zos.write(buffer, 0, len);
+                    }
+                    zos.closeEntry();
+                }
+            }
         }
     }
 }

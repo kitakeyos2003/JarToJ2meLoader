@@ -366,9 +366,7 @@ public final class PhiInsn extends SsaInsn {
         } else {
             for (int i = 0; i < sz; i++) {
                 sb.append(" ");
-                sb.append(sources.get(i).toHuman()
-                        + "[b="
-                        + Hex.u2(operands.get(i).ropLabel) + "]");
+                sb.append(sources.get(i).toHuman()).append("[b=").append(Hex.u2(operands.get(i).ropLabel)).append("]");
             }
         }
 

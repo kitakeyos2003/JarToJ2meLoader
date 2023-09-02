@@ -9,6 +9,7 @@ import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.nio.file.Files;
 
 public class ZipUtils {
 
@@ -21,7 +22,7 @@ public class ZipUtils {
             throw new IOException("Entry '" + name + "' not found in zip: " + srcZip);
         }
         try (BufferedInputStream bis = new BufferedInputStream(zip.getInputStream(entry));
-                BufferedOutputStream bos = new BufferedOutputStream(new FileOutputStream(dst), BUFFER_SIZE)) {
+                BufferedOutputStream bos = new BufferedOutputStream(Files.newOutputStream(dst.toPath()), BUFFER_SIZE)) {
             byte[] data = new byte[BUFFER_SIZE];
             int read;
             while ((read = bis.read(data)) != -1) {

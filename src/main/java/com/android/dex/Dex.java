@@ -31,6 +31,7 @@ import java.io.OutputStream;
 import java.io.UTFDataFormatException;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
+import java.nio.file.Files;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.AbstractList;
@@ -89,7 +90,7 @@ public final class Dex {
                 throw new DexException("Expected " + DexFormat.DEX_IN_JAR_NAME + " in " + file);
             }
         } else if (file.getName().endsWith(".dex")) {
-            try (InputStream inputStream = new FileInputStream(file)) {
+            try (InputStream inputStream = Files.newInputStream(file.toPath())) {
                 loadFrom(inputStream);
             }
         } else {
@@ -132,7 +133,7 @@ public final class Dex {
     }
 
     public void writeTo(File dexOut) throws IOException {
-        try (OutputStream out = new FileOutputStream(dexOut)) {
+        try (OutputStream out = Files.newOutputStream(dexOut.toPath())) {
             writeTo(out);
         }
     }

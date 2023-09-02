@@ -177,7 +177,7 @@ public class CodeObserver implements BytecodeArray.Visitor {
 
         sb.append(header(offset));
         if (padding != 0) {
-            sb.append(" // padding: " + Hex.u4(padding));
+            sb.append(" // padding: ").append(Hex.u4(padding));
         }
         sb.append('\n');
 

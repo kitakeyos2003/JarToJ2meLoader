@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.file.Files;
 import java.util.HashMap;
 import java.util.List;
 import java.util.zip.ZipEntry;
@@ -32,9 +33,8 @@ public class AndroidProducer {
 
     public static void processJar(File jarInputFile, File jarOutputFile) throws Exception {
         HashMap<String, byte[]> resources = new HashMap<>();
-        ZipEntry zipEntry;
         InputStream zis;
-        try (ZipOutputStream zos = new ZipOutputStream(new FileOutputStream(jarOutputFile))) {
+        try (ZipOutputStream zos = new ZipOutputStream(Files.newOutputStream(jarOutputFile.toPath()))) {
             ZipFile zip = new ZipFile(jarInputFile);
             List<FileHeader> list = zip.getFileHeaders();
             for (FileHeader header : list) {

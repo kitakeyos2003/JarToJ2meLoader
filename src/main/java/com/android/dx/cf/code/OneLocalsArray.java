@@ -82,7 +82,7 @@ public class OneLocalsArray extends LocalsArray {
         for (int i = 0; i < locals.length; i++) {
             TypeBearer type = locals[i];
             String s = (type == null) ? "<invalid>" : type.toString();
-            sb.append("locals[" + Hex.u2(i) + "]: " + s + "\n");
+            sb.append("locals[").append(Hex.u2(i)).append("]: ").append(s).append("\n");
         }
 
         return sb.toString();

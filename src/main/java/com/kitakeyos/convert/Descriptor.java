@@ -7,6 +7,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.nio.file.Files;
 import java.text.DecimalFormat;
 import java.util.HashMap;
 import java.util.Map;
@@ -62,7 +63,7 @@ public class Descriptor {
     public Descriptor(File file, boolean isJad) throws IOException {
         this.isJad = isJad;
         byte[] buf;
-        try (InputStream inputStream = new FileInputStream(file)) {
+        try (InputStream inputStream = Files.newInputStream(file.toPath())) {
             int count = inputStream.available();
             buf = new byte[count];
             int n = 0;
